@@ -25,3 +25,11 @@ dev = [
     "mypy>=1.8",
     "pre-commit>=3.6"
 ]
+
+[tool.ruff]
+line-length = 100
+src = ["."]
+
+[tool.ruff.lint]
+extend-select = ["I", "N", "UP", "RUF", "PL"]
+ignore = ["E203", "E501"]
