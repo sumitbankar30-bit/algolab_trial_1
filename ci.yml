@@ -1,6 +1,6 @@
 
 #build step
 build:
-  script:
+  scrtpt:
     - echo "first step"
     - echo "second step"
