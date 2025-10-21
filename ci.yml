@@ -1,0 +1,6 @@
+
+#build step
+build:
+  scrtpt:
+    - echo "first step"
+    - echo "second step"
