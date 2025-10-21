@@ -3,9 +3,15 @@ name: CI
 
 on:
   push:
-    branches: [ "master" ]     # change if your default branch is different
+    branches: [ "master" ]
+    paths:
+      - "api/**"
+      - ".github/workflows/api-ci.yml"     # change if your default branch is different
   pull_request:
     branches: [ "master" ]
+    paths:
+      - "api/**"
+      - ".github/workflows/api-ci.yml"  
   workflow_dispatch: 
 
 jobs:
