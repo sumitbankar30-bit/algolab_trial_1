@@ -48,4 +48,4 @@ strict_optional = true
 
 [tool.setuptools]
 package-dir = {"" = "."}
-packages = ["algos*"]
+packages = ["algos"]
