@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]     # change if your default branch is different
+    branches: [ "master" ]     # change if your default branch is different
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
   workflow_dispatch:          # lets you run it by hand
 jobs:
   test:
