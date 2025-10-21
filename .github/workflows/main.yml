@@ -12,3 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo "CI is running ✅"
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This is a test job"
+  delay-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This job is delayed"
