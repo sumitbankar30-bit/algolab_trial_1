@@ -47,9 +47,5 @@ no_implicit_optional = true
 strict_optional = true
 
 [tool.setuptools]
-package-dir = { "" = "." }
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["algos*", "backtests*"]   # what to ship
-exclude = ["tests*", "data*", "reports*", "configs*", "notebooks*", "examples*"]
+package-dir = {"" = "."}
+packages = ["algos*"]
