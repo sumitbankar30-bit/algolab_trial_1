@@ -17,5 +17,12 @@ jobs:
   bash_execute:
     runs-on: ubuntu-latest
     steps:
-      - name: Execute Bash Script
-        run: bash basci.sh
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x ./basci.sh   # adjust path/name if it's actually basic.sh
+
+      - name: Run script
+        run: ./basci.sh            # or: bash ./basci.sh
+        shell: bash
