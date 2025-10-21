@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "algolab"
 version = "0.0.1"
 description = "Algorithmic trading lab scaffold"
-authors = [{name = "Your Name"}]
+authors = [{name = "Sumit Bankar"}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
