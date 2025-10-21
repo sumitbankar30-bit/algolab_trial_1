@@ -1,12 +1,17 @@
 
-name: CI
+name:  MAIN CI
 
 on:
   push:
     branches: [ "master" ]
- 
+    paths:
+      - "api/**"
+      - ".github/workflows/main-ci.yml"     # also run when this workflow file changes
   pull_request:
     branches: [ "master" ]
+    paths:
+      - "api/**"
+      - ".github/workflows/main-ci.yml"
 
   workflow_dispatch: 
 

@@ -3,8 +3,14 @@ name: ci
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - "api/**"
+      - ".github/workflows/ci.yml"     # also run when this workflow file changes
   pull_request:
     branches: [ "master" ]
+    paths:
+      - "api/**"
+      - ".github/workflows/ci.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
