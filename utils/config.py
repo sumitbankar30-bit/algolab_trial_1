@@ -1,10 +1,10 @@
+# utils/config.py
 from __future__ import annotations
 
-from pathlib import Path
+from pathlib import Path  # stdlib
 
-import yaml  # type: ignore[import-untyped]
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, Field, ValidationInfo, field_validator  # third-party
+import yaml  # type: ignore[import-untyped]  # third-party
 
 
 class DataPaths(BaseModel):
@@ -19,17 +19,21 @@ class FeatureConfig(BaseModel):
 
     @field_validator("sma_long")
     @classmethod
-    def _check_order(cls, v, info):
-        # Ensure long > short if both present
+    def _check_order(cls, v: int, info: ValidationInfo) -> int:
+        """Ensure sma_long > sma_short (Pydantic v2 style)."""
         short = info.data.get("sma_short", 10)
-        if v <= short:
+        try:
+            short_int = int(short) if short is not None else 10
+        except (TypeError, ValueError):
+            short_int = 10
+        if v <= short_int:
             raise ValueError("sma_long must be > sma_short")
         return v
 
 
 class BacktestConfig(BaseModel):
     symbol: str
-    initial_capital: float = Field(100000, ge=0)
+    initial_capital: float = Field(100_000, ge=0)
     fee_bps: float = Field(0.0, ge=0)
     slippage_bps: float = Field(0.0, ge=0)
     start: str | None = None
@@ -49,8 +53,9 @@ class AppConfig(BaseModel):
 
 
 def load_config(path: str | Path) -> AppConfig:
+    """Read YAML and validate into AppConfig (empty/missing file -> {} defaults)."""
     p = Path(path)
-    if not p.exists():
-        raise FileNotFoundError(f"Config file not found: {p}")
-    data = yaml.safe_load(p.read_text(encoding="utf-8"))
+    data = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {}
+    if data is None:
+        data = {}
     return AppConfig.model_validate(data)
