@@ -12,7 +12,7 @@ def ingest(cfg: AppConfig) -> None:
     """Copy raw sample CSV to staging; in real life, validate/download/etc."""
     raw = repo_path(str(cfg.data_paths.raw))
     staging = repo_path(str(cfg.data_paths.staging))
- #   out_dir = repo_path(str(cfg.data_paths.features))
+    #   out_dir = repo_path(str(cfg.data_paths.features))
     staging.mkdir(parents=True, exist_ok=True)
     src = raw / "prices_sample.csv"
     dst = staging / "prices_sample.csv"
