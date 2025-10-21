@@ -1,0 +1,6 @@
+
+#build step
+build:
+  script:
+    - echo "first step"
+    - echo "second step"
