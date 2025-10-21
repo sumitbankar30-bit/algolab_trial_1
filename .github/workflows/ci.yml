@@ -41,6 +41,8 @@ jobs:
       - name: Black (check)
         run: black --check .
         
+      - name: Mypy
+        run: mypy .
 
 
 
