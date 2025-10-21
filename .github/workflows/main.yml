@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]     # change if your default branch is different
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:          # lets you run it by hand
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "CI is running ✅"
