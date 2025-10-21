@@ -37,6 +37,5 @@ jobs:
   teardown:
     needs: delay
     runs-on: ubuntu-latest
-    when: manual
     steps:
       - run: echo "Tearing down the environment"    
