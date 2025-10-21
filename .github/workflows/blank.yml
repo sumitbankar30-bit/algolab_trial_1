@@ -23,6 +23,18 @@ jobs:
       - name: Make script executable
         run: chmod +x ./basci.sh   # adjust path/name if it's actually basic.sh
 
-      - name: Run script
-        run: ./basci.sh            # or: bash ./basci.sh
-        shell: bash
+      - name: Create folder, run script, create file
+        run: |
+          mkdir -p myfolder
+          cd myfolder
+          # Script is in repo root, so call it via ..
+          bash ../basci.sh
+          touch newfile
+          
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: myfolder/newfile
+          if-no-files-found: error
