@@ -4,3 +4,4 @@ build:
   scrtpt:
     - echo "first step"
     - echo "second step"
+    - echo "third step"
