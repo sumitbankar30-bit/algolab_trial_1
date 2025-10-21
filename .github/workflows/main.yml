@@ -9,6 +9,10 @@ on:
   workflow_dispatch: 
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Setting up the environment"
   build:
     runs-on: ubuntu-latest
     steps:
@@ -24,3 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "This job is delayed"
+  teardown:
+    needs: delay
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Tearing down the environment"    
