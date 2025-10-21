@@ -25,12 +25,13 @@ jobs:
 
       - name: Create folder, run script, create file
         run: |
-          mkdir -p myfolder
+          mkdir myfolder
+          cp ./basci.sh myfolder/
           cd myfolder
           # Script is in repo root, so call it via ..
-          bash ../basci.sh
+          bash ./basci.sh
           touch newfile
-          
+
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
