@@ -1,0 +1,4 @@
+2025-10-21 01:53:09,157 | INFO | backtest | Logger initialized. Writing to logs\run_20251021-015309.log
+2025-10-21 01:53:09,157 | INFO | backtest | Loading prices from data\raw\prices_sample.csv
+2025-10-21 01:53:09,157 | INFO | backtest | Building features short=10 long=30
+2025-10-21 01:53:09,157 | INFO | backtest | Wrote backtest summary to reports\backtest_summary.json

@@ -1,0 +1,20 @@
+data_paths:
+  raw: "data/raw"
+  staging: "data/staging"
+  features: "data/features"
+
+features:
+  sma_short: 10
+  sma_long: 30
+
+backtest:
+  symbol: "SYN"
+  initial_capital: 100000
+  fee_bps: 1.0
+  slippage_bps: 0.5
+  start: "2000-01-01"
+  end: "2100-01-01"
+
+io:
+  report_path: "reports/backtest_summary.json"
+  log_dir: "logs"
