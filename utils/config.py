@@ -1,8 +1,10 @@
 from __future__ import annotations
-import yaml  # type: ignore[import-untyped]
+
 from pathlib import Path
-from typing import Mapping
-from pydantic import BaseModel, Field, field_validator
+
+import yaml  # type: ignore[import-untyped]
+from pydantic import BaseModel, Field
+
 
 
 class DataPaths(BaseModel):
