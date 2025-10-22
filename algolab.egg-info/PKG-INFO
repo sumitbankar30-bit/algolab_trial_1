@@ -18,6 +18,7 @@ Requires-Dist: ruff>=0.5.0; extra == "dev"
 Requires-Dist: mypy>=1.8; extra == "dev"
 Requires-Dist: pre-commit>=3.6; extra == "dev"
 Requires-Dist: lxml>=4.9; extra == "dev"
+Requires-Dist: types-PyYAML>=5.0.1; extra == "dev"
 Dynamic: license-file
 
 # algolab — Phase 0 scaffold
