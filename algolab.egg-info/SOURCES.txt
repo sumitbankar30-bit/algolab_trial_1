@@ -23,6 +23,7 @@ algos/ma_crossover.py
 backtests/__init__.py
 backtests/runner.py
 data/__init__.py
+data/loader.py
 tests/test_backtest_smoke.py
 tests/test_cli.py
 tests/test_config.py

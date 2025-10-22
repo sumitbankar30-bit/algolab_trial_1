@@ -1,10 +1,13 @@
+# data/loader.py
 from pathlib import Path
+
 import pandas as pd
 
-def load_prices(path: Path) -> pd.DataFrame:
+
+def load_prices(path: Path | str) -> pd.DataFrame:
     """
-    CSV with columns: time, close
-    Parses time to UTC, sets it as index, sorts ascending.
+    Load a CSV with columns: time, close.
+    Parses time to UTC, sets it as index, sorts ascending, returns df[["close"]].
     """
     df = pd.read_csv(path)
     if "time" not in df or "close" not in df:

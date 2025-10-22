@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path  # stdlib
 
-import yaml  # type: ignore[import-untyped]  # third-party
+import yaml
 from pydantic import BaseModel, Field, ValidationInfo, field_validator  # third-party
 
 
