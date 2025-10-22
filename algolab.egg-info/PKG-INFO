@@ -2,7 +2,7 @@ Metadata-Version: 2.4
 Name: algolab
 Version: 0.0.1
 Summary: Algorithmic trading lab scaffold
-Author: Your Name
+Author: sumit
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 License-File: LICENSE
