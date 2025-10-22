@@ -1,0 +1,26 @@
+Mypy Type Check Coverage Summary
+================================
+
+Script: index
+
++---------------------+-------------------+---------+
+| Module              | Imprecision       | Lines   |
++---------------------+-------------------+---------+
+| algos               |   0.00% imprecise |   0 LOC |
+| algos.base          |  20.00% imprecise |  10 LOC |
+| algos.ma_crossover  |  40.91% imprecise |  22 LOC |
+| backtests           |   0.00% imprecise |   0 LOC |
+| backtests.runner    |  38.37% imprecise |  86 LOC |
+| tasks               |  10.61% imprecise |  66 LOC |
+| test_backtest_smoke |  25.00% imprecise |   8 LOC |
+| test_cli            |   0.00% imprecise |  31 LOC |
+| test_config         |   0.00% imprecise |   9 LOC |
+| test_logging        |   0.00% imprecise |  10 LOC |
+| test_paths          |   0.00% imprecise |  15 LOC |
+| utils               |   0.00% imprecise |   0 LOC |
+| utils.config        |  19.67% imprecise |  61 LOC |
+| utils.logging       |   0.00% imprecise |  31 LOC |
+| utils.paths         |   0.00% imprecise |   9 LOC |
++---------------------+-------------------+---------+
+| Total               |  18.16% imprecise | 358 LOC |
++---------------------+-------------------+---------+
