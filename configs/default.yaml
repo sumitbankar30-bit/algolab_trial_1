@@ -4,8 +4,8 @@ data_paths:
   features: "data/features"
 
 features:
-  sma_short: 10
-  sma_long: 30
+  sma_short: 3
+  sma_long: 5
 
 backtest:
   symbol: "SYN"

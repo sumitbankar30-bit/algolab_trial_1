@@ -55,5 +55,5 @@ pythonpath = ["."]
 
 [tool.setuptools]
 package-dir = { "" = "." }
-packages = ["backtests", "utils","algos"]              # exact names, no wildcards
+packages = ["backtests", "utils","algos","data"]              # exact names, no wildcards
 

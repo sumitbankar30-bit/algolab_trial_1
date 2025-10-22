@@ -1,22 +1,16 @@
-from __future__ import annotations
-
 import pandas as pd
 
-from .base import Strategy
+class MACrossover:
+    """Long when fast MA > slow MA; otherwise flat."""
+    def __init__(self, fast: int = 10, slow: int = 20) -> None:
+        if fast >= slow:
+            raise ValueError("fast must be < slow")
+        self.fast, self.slow = fast, slow
 
-
-class MovingAverageCrossover(Strategy):
-    def __init__(self, short: int, long: int) -> None:
-        if long <= short:
-            raise ValueError("long must be > short")
-        self.short = short
-        self.long = long
-
-    def generate_signals(self, df: pd.DataFrame) -> pd.DataFrame:
+    def signals(self, df: pd.DataFrame) -> pd.DataFrame:
+        # expects df indexed by time with a 'close' column
         out = df.copy()
-        out["sma_short"] = out["close"].rolling(self.short, min_periods=self.short).mean()
-        out["sma_long"] = out["close"].rolling(self.long, min_periods=self.long).mean()
-        out["signal"] = 0
-        out.loc[out["sma_short"] > out["sma_long"], "signal"] = 1  # long when short>long
-        out["signal"] = out["signal"].ffill().fillna(0).astype(int)
-        return out
+        out["ma_fast"] = out["close"].rolling(self.fast, min_periods=self.fast).mean()
+        out["ma_slow"] = out["close"].rolling(self.slow, min_periods=self.slow).mean()
+        out["signal"]  = (out["ma_fast"] > out["ma_slow"]).astype(int)  # 1 long, 0 flat
+        return out.dropna()

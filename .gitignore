@@ -14,6 +14,7 @@ __pycache__/
 logs/
 data/staging/
 data/features/
+data/raw/
 reports/*.html
 reports/*.md
 reports/*.json
