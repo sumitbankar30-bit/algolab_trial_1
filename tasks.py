@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 from utils.config import load_config
+from utils.paths import repo_path
 
 
 def ensure_dirs(*paths: Path | str) -> None:
@@ -98,17 +99,17 @@ def _run_long_flat(
 
 def cmd_ingest(config_path: str) -> int:
     cfg = load_config(config_path)
-    raw = Path(cfg.data_paths.raw)
-    staging = Path(cfg.data_paths.staging)
-    out_dir = Path(cfg.data_paths.features) #ruff: noqa F841
-    ensure_dirs(raw, staging, out_dir)
+    raw = repo_path(str(cfg.data_paths.raw))
+    staging = repo_path(str(cfg.data_paths.staging))
+    features_dir = repo_path(str(cfg.data_paths.features))
+    ensure_dirs(raw, staging, features_dir)
     # no-op ingest for smoke
     return 0
 
 
 def cmd_features(config_path: str) -> int:
     cfg = load_config(config_path)
-    features_dir = Path(cfg.data_paths.features)
+    features_dir = repo_path(cfg.data_paths.features)
     ensure_dirs(features_dir)
     # minimal placeholder so step is observable (won't be used by backtest once real features exist)
     features_csv = features_dir / "features.csv"
@@ -119,7 +120,7 @@ def cmd_features(config_path: str) -> int:
 
 def cmd_backtest(config_path: str) -> int:
     cfg = load_config(config_path)
-    report_path = Path(cfg.io.report_path)
+    report_path = repo_path(cfg.io.report_path)
     ensure_dirs(report_path.parent, cfg.io.log_dir)
 
     features_path = _resolve_features_path(cfg)
