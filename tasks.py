@@ -100,7 +100,7 @@ def cmd_ingest(config_path: str) -> int:
     cfg = load_config(config_path)
     raw = Path(cfg.data_paths.raw)
     staging = Path(cfg.data_paths.staging)
-    out_dir = Path(cfg.data_paths.features)
+    out_dir = Path(cfg.data_paths.features) #ruff: noqa F841
     ensure_dirs(raw, staging, out_dir)
     # no-op ingest for smoke
     return 0
