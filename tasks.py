@@ -118,45 +118,91 @@ def cmd_features(config_path: str) -> int:
     return 0
 
 
-def cmd_backtest(config_path: str) -> int:
+def cmd_backtest(config_path: str) -> int:  # noqa: PLR0912, PLR0915
     cfg = load_config(config_path)
-    report_path = repo_path(cfg.io.report_path)
+    report_path = Path(cfg.io.report_path)
     ensure_dirs(report_path.parent, cfg.io.log_dir)
 
-    features_path = _resolve_features_path(cfg)
-    df = _read_features(features_path)
-    if df.empty:
-        summary = {"total_return": 0.0, "sharpe_annualized": 0.0}
-        report_path.write_text(json.dumps(summary), encoding="utf-8")
-        return 0
+    # Resolve features file (env or config override supported)
+    try:
+        features_path = _resolve_features_path(cfg)
+    except NameError:
+        # if you don't use the helper, inline it:
+        features_base = Path(cfg.data_paths.features)
+        features_path = Path(getattr(cfg.io, "features_file", features_base / "features.csv"))
 
-    df = _sort_by_time(df)
+    print("[DEBUG] Using features:", features_path)
+    df = None
+    if features_path.exists():
+        df = pd.read_csv(features_path)
+        print("[DEBUG] Head:\n", df.head().to_string())
+    else:
+        print("[DEBUG] Features file does not exist")
 
-    price_col = _select_price_col(df)
-    df[price_col] = pd.to_numeric(df[price_col], errors="coerce")
-    df = df.dropna(subset=[price_col])
+    summary = {"total_return": 0.0, "sharpe_annualized": 0.0}
 
-    df["signal"] = _build_signal(df, price_col)
-    # helpful debug
-    print(
-        "[DEBUG] rows:",
-        len(df),
-        "signal_counts:",
-        df["signal"].value_counts(dropna=False).to_dict(),
-        "entries:",
-        int((df["signal"].diff() == 1).sum()),
-        "exits:",
-        int((df["signal"].diff() == -1).sum()),
-    )
+    if df is not None and not df.empty:
+        # normalize columns
+        df.columns = [str(c).strip().lower() for c in df.columns]
 
-    summary = _run_long_flat(
-        df,
-        price_col,
-        fee_bps=float(getattr(cfg.backtest, "fee_bps", 1.0)),
-        initial_cash=float(getattr(cfg.backtest, "initial_capital", 100_000)),
-    )
+        # pick a time column (optional, for sorting)
+        tcol = None
+        for c in ("time", "date", "timestamp", "datetime", "ts"):
+            if c in df.columns:
+                tcol = c
+                break
+        if tcol:
+            dt = pd.to_datetime(df[tcol], utc=True, errors="coerce", dayfirst=True)
+            df = df.assign(_t=dt).dropna(subset=["_t"]).sort_values("_t").drop(columns=["_t"])
+
+        # choose a price column
+        price_col = None
+        for c in ("close", "price", "feature", "value"):
+            if c in df.columns:
+                price_col = c
+                break
+        if not price_col:
+            raise ValueError("No price-like column found (need close/price/feature/value).")
+        df[price_col] = pd.to_numeric(df[price_col], errors="coerce")
+
+        # get or build a signal
+        if "signal" in df.columns:
+            sig = pd.to_numeric(df["signal"], errors="coerce").fillna(0).clip(-1, 1).astype(int)
+        else:
+            fast, slow = 10, 30
+            ma_f = df[price_col].rolling(fast, min_periods=fast).mean()
+            ma_s = df[price_col].rolling(slow, min_periods=slow).mean()
+            sig = (ma_f > ma_s).astype(int)
+
+        df = df.dropna(subset=[price_col])
+        df["signal"] = sig
+
+        # trade loop (one statement per line)
+        fee = 1.0 / 10_000.0
+        cash = 100_000.0
+        pos = 0.0
+        equity = []
+        for price, s in zip(df[price_col].values, df["signal"].values):
+            if s == 0 and pos > 0:
+                cash += pos * price
+                cash -= pos * price * fee
+                pos = 0.0
+            if s == 1 and pos == 0.0:
+                units = cash / price
+                cash -= units * price
+                cash -= units * price * fee
+                pos = units
+            equity.append(cash + pos * price)
+
+        eq = np.array(equity)
+        rets = np.diff(eq) / eq[:-1] if len(eq) > 1 else np.array([])
+        total_return = float(eq[-1] / 100_000.0 - 1) if len(eq) else 0.0
+        sharpe = float((rets.mean() / (rets.std() + 1e-12)) * np.sqrt(252)) if len(rets) else 0.0
+        summary = {"total_return": total_return, "sharpe_annualized": sharpe}
+
     report_path.write_text(json.dumps(summary), encoding="utf-8")
     return 0
+
 
 
 def main() -> int:
