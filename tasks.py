@@ -204,7 +204,6 @@ def cmd_backtest(config_path: str) -> int:  # noqa: PLR0912, PLR0915
     return 0
 
 
-
 def main() -> int:
     parser = argparse.ArgumentParser(prog="tasks")
     parser.add_argument("command", choices=["ingest", "features", "backtest"])
