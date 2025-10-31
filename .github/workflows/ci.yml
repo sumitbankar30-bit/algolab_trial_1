@@ -44,7 +44,6 @@ jobs:
       - name: Mypy
         run: mypy .
   
-        
       - name: Pytest
         run: pytest -q
 
